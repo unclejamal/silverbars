@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -29,13 +30,25 @@ public class LiveBoardTest {
     @Test
     public void hasOneRegisteredSale() throws Exception {
         OrderService orderService = new OrderService();
-        UUID orderId = UUID.randomUUID();
-        orderService.registerOrder(new Order(orderId, "userId1", 3.5, 303, OrderType.SELL));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 3.5, 303, OrderType.SELL));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new Order(orderId, "userId1", 3.5, 303, OrderType.SELL))));
+        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(3.5, 303))));
     }
+
+//    @Test
+//    public void addsTwoRegisteredSalesForSamePrice() throws Exception {
+//        OrderService orderService = new OrderService();
+//        UUID orderId1 = UUID.randomUUID();
+//        UUID orderId2 = UUID.randomUUID();
+//        orderService.registerOrder(new Order(orderId1, "userId1", 3.5, 303, OrderType.SELL));
+//        orderService.registerOrder(new Order(orderId2, "userId2", 2.1, 303, OrderType.SELL));
+//
+//        LiveBoard liveBoard = orderService.getLiveBoard();
+//
+//        assertThat(liveBoard.getSales(), equalTo(asList(new Sale(orderId1, "userId1", 5.6, 303, OrderType.SELL))));
+//    }
 
     public enum OrderType {
         SELL
@@ -43,14 +56,40 @@ public class LiveBoardTest {
 
     public static class LiveBoard {
 
-        private final List<Order> sales;
+        private final List<LiveBoardSale> sales;
 
-        public LiveBoard(List<Order> sales) {
+        public LiveBoard(List<LiveBoardSale> sales) {
             this.sales = sales;
         }
 
-        public List<Order> getSales() {
+        public List<LiveBoardSale> getSales() {
             return sales;
+        }
+    }
+
+    public static class LiveBoardSale {
+
+        private final double weightInKilograms;
+        private final int priceInGbpPerKilogram;
+
+        public LiveBoardSale(double weightInKilograms, int priceInGbpPerKilogram) {
+            this.weightInKilograms = weightInKilograms;
+            this.priceInGbpPerKilogram = priceInGbpPerKilogram;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return EqualsBuilder.reflectionEquals(this, o);
+        }
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this);
+        }
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this);
         }
     }
 
@@ -63,7 +102,8 @@ public class LiveBoardTest {
         }
 
         public LiveBoard getLiveBoard() {
-            return new LiveBoard(orders);
+            List<LiveBoardSale> liveBoardSales = orders.stream().map(o -> new LiveBoardSale(o.weightInKilograms, o.priceInGbpPerKilogram)).collect(toList());
+            return new LiveBoard(liveBoardSales);
         }
 
         public void registerOrder(Order order) {

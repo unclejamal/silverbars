@@ -1,6 +1,5 @@
 package com.cs;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,7 +7,7 @@ import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class OrderServiceTest {
 
@@ -23,14 +22,14 @@ public class OrderServiceTest {
     public void hasInitiallyNoSales() throws Exception {
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), Matchers.empty());
+        assertThat(liveBoard.getSales(), is(empty()));
     }
 
     @Test
     public void hasInitiallyNoBuys() throws Exception {
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), Matchers.empty());
+        assertThat(liveBoard.getBuys(), is(empty()));
     }
 
     @Test
@@ -99,6 +98,6 @@ public class OrderServiceTest {
         orderService.cancelOrder(orderId);
 
         LiveBoard liveBoard = orderService.getLiveBoard();
-        assertThat(liveBoard.getSales(), Matchers.empty());
+        assertThat(liveBoard.getSales(), is(empty()));
     }
 }

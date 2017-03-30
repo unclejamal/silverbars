@@ -29,7 +29,7 @@ public class AcceptanceTest {
 //    Opposite is true for the BUY orders.
 
     @Test
-    public void requirement3_GetSummaryInformationOfLiveOrders() throws Exception {
+    public void requirement3_GetSummaryInformationOfLiveSellOrders() throws Exception {
         OrderService orderService = new OrderService();
         orderService.registerOrder(new Order(UUID.randomUUID(), "user1", 3.5, 306, OrderType.SELL));
         orderService.registerOrder(new Order(UUID.randomUUID(), "user2", 1.2, 310, OrderType.SELL));
@@ -42,6 +42,23 @@ public class AcceptanceTest {
                 new LiveBoardSale(5.5, 306),
                 new LiveBoardSale(1.5, 307),
                 new LiveBoardSale(1.2, 310)
+        )));
+    }
+
+    @Test
+    public void requirement3_GetSummaryInformationOfLiveBuyOrders() throws Exception {
+        OrderService orderService = new OrderService();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user1", 3.5, 306, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user2", 1.2, 310, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user3", 1.5, 307, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user4", 2.0, 306, OrderType.BUY));
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getBuys(), equalTo(asList(
+                new LiveBoardSale(1.2, 310),
+                new LiveBoardSale(1.5, 307),
+                new LiveBoardSale(5.5, 306)
         )));
     }
 

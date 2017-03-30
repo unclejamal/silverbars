@@ -7,3 +7,4 @@ tiny types in order
 DAO in Service
 
 acceptance tests readability
+cancelling not existing order

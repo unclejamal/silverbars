@@ -27,6 +27,13 @@ public class OrderServiceTest {
     }
 
     @Test
+    public void hasInitiallyNoBuys() throws Exception {
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getBuys(), Matchers.empty());
+    }
+
+    @Test
     public void hasOneRegisteredBuy() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 7.7, 707, OrderType.BUY));
 

@@ -77,8 +77,8 @@ public class LiveBoardTest {
 
     public static class LiveBoardSale {
 
-        public final double weightInKilograms;
-        public final int priceInGbpPerKilogram;
+        private final double weightInKilograms;
+        private final int priceInGbpPerKilogram;
 
         public LiveBoardSale(double weightInKilograms, int priceInGbpPerKilogram) {
             this.weightInKilograms = weightInKilograms;
@@ -125,7 +125,7 @@ public class LiveBoardTest {
 
             List<LiveBoardSale> liveBoardSales = priceToWeightMap.entrySet().stream()
                     .map(priceAndWeight -> new LiveBoardSale(priceAndWeight.getValue(), priceAndWeight.getKey()))
-                    .sorted(Comparator.comparing(liveBoardSale -> liveBoardSale.priceInGbpPerKilogram))
+                    .sorted(Comparator.comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram()))
                     .collect(toList());
 
             return new LiveBoard(liveBoardSales);

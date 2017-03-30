@@ -7,22 +7,22 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.UUID;
 
 public class Order {
-    private final UUID uuid;
+    private final UUID orderId;
     private final String userId;
     private final double weightInKilograms;
     private final int priceInGbpPerKilogram;
     private final OrderType orderType;
 
-    public Order(UUID uuid, String userId, double weightInKilograms, int priceInGbpPerKilogram, OrderType orderType) {
-        this.uuid = uuid;
+    public Order(UUID orderId, String userId, double weightInKilograms, int priceInGbpPerKilogram, OrderType orderType) {
+        this.orderId = orderId;
         this.userId = userId;
         this.weightInKilograms = weightInKilograms;
         this.priceInGbpPerKilogram = priceInGbpPerKilogram;
         this.orderType = orderType;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getOrderId() {
+        return orderId;
     }
 
     public double getWeightInKilograms() {

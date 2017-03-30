@@ -41,7 +41,7 @@ public class OrderService {
 
     public void cancelOrder(UUID orderId) {
         List<Order> ordersAfterRemoval = orders.stream()
-                .filter(order -> !Objects.equals(orderId, order.getUuid()))
+                .filter(order -> !Objects.equals(orderId, order.getOrderId()))
                 .collect(Collectors.toList());
         this.orders = ordersAfterRemoval;
     }

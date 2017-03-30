@@ -27,8 +27,8 @@ public class OrderService {
     private List<LiveBoardSale> calculateLiveBoardFor(OrderType type, Comparator<LiveBoardSale> comparator) {
         Map<Integer, Double> priceToWeightMap = orders.stream()
                 .filter(order -> type == order.getOrderType())
-                .collect(groupingBy(order -> order.getPriceInGbpPerKilogram(),
-                        summingDouble(order -> order.getWeightInKilograms()))
+                .collect(groupingBy(Order::getPriceInGbpPerKilogram,
+                        summingDouble(Order::getWeightInKilograms))
                 );
 
         return priceToWeightMap.entrySet().stream()

@@ -1,7 +1,6 @@
 package com.cs;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.*;
@@ -42,7 +41,7 @@ public class OrderService {
     public void cancelOrder(UUID orderId) {
         List<Order> ordersAfterRemoval = orders.stream()
                 .filter(order -> !Objects.equals(orderId, order.getOrderId()))
-                .collect(Collectors.toList());
+                .collect(toList());
         this.orders = ordersAfterRemoval;
     }
 }

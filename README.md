@@ -20,8 +20,6 @@ Test code assumptions
 ===========================
 AcceptanceTest class was introduced assuming a programmer will review it. If we were to write acceptance tests as a documentation for the business people, the code syntax should be most likely replaced with plain English phrases (perhaps supported by a different tool).
 
-AcceptanceTest class covers Requirement 3 (and as a result of that - 1), whilst the requirement 2 is covered at the unit test level in OrderServiceTest. In real application (with a DAO class) an extra AcceptanceTest would be appropriate. For this exercise I would have to essentially duplicate it.
-
 
 Production code assumptions
 ===========================

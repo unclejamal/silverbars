@@ -68,4 +68,37 @@ public class AcceptanceTest {
         )));
     }
 
+    // Extra acceptance tests I added to demonstrate that all the 3 Requirements work together
+    @Test
+    public void allRequirements_registerThenCancelThenGetLiveBoardSummariesWithAndWithoutMerging() throws Exception {
+        UUID sellOrderIdToBeCancelled = UUID.randomUUID();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user1", 3.5, 306, OrderType.SELL));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user2", 1.2, 310, OrderType.SELL));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user3", 1.5, 307, OrderType.SELL));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user4", 2.0, 306, OrderType.SELL));
+        orderService.registerOrder(new Order(sellOrderIdToBeCancelled, "userCancelMe", 99.9, 999, OrderType.SELL));
+        UUID buyOrderIdToBeCancelled = UUID.randomUUID();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user1", 3.5, 306, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user2", 1.2, 310, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user3", 1.5, 307, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "user4", 2.0, 306, OrderType.BUY));
+        orderService.registerOrder(new Order(buyOrderIdToBeCancelled, "userCancelMe", 99.9, 999, OrderType.BUY));
+        orderService.cancelOrder(sellOrderIdToBeCancelled);
+        orderService.cancelOrder(buyOrderIdToBeCancelled);
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getSellSummary(), equalTo(asList(
+                new LiveBoardSummaryItem(5.5, 306),
+                new LiveBoardSummaryItem(1.5, 307),
+                new LiveBoardSummaryItem(1.2, 310)
+        )));
+
+        assertThat(liveBoard.getBuySummary(), equalTo(asList(
+                new LiveBoardSummaryItem(1.2, 310),
+                new LiveBoardSummaryItem(1.5, 307),
+                new LiveBoardSummaryItem(5.5, 306)
+        )));
+    }
+
 }

@@ -6,10 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -50,6 +47,17 @@ public class LiveBoardTest {
         assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(5.6, 303))));
     }
 
+    @Test
+    public void sortsTwoRegisteredSalesForDifferentPricesByPriceInAscendingOrder() throws Exception {
+        OrderService orderService = new OrderService();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 2.2, 222, OrderType.SELL));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 1.1, 111, OrderType.SELL));
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(1.1, 111), new LiveBoardSale(2.2, 222))));
+    }
+
     public enum OrderType {
         SELL
     }
@@ -75,6 +83,14 @@ public class LiveBoardTest {
         public LiveBoardSale(double weightInKilograms, int priceInGbpPerKilogram) {
             this.weightInKilograms = weightInKilograms;
             this.priceInGbpPerKilogram = priceInGbpPerKilogram;
+        }
+
+        public double getWeightInKilograms() {
+            return weightInKilograms;
+        }
+
+        public int getPriceInGbpPerKilogram() {
+            return priceInGbpPerKilogram;
         }
 
         @Override
@@ -109,7 +125,9 @@ public class LiveBoardTest {
 
             List<LiveBoardSale> liveBoardSales = priceToWeightMap.entrySet().stream()
                     .map(priceAndWeight -> new LiveBoardSale(priceAndWeight.getValue(), priceAndWeight.getKey()))
+                    .sorted(Comparator.comparing(liveBoardSale -> liveBoardSale.priceInGbpPerKilogram))
                     .collect(toList());
+
             return new LiveBoard(liveBoardSales);
         }
 

@@ -1,16 +1,11 @@
 package com.cs;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -82,120 +77,4 @@ public class LiveBoardTest {
         assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(5.5, 306), new LiveBoardSale(1.5, 307), new LiveBoardSale(1.2, 310))));
     }
 
-    public enum OrderType {
-        SELL
-    }
-
-    public static class LiveBoard {
-
-        private final List<LiveBoardSale> sales;
-
-        public LiveBoard(List<LiveBoardSale> sales) {
-            this.sales = sales;
-        }
-
-        public List<LiveBoardSale> getSales() {
-            return sales;
-        }
-    }
-
-    public static class LiveBoardSale {
-
-        private final double weightInKilograms;
-        private final int priceInGbpPerKilogram;
-
-        public LiveBoardSale(double weightInKilograms, int priceInGbpPerKilogram) {
-            this.weightInKilograms = weightInKilograms;
-            this.priceInGbpPerKilogram = priceInGbpPerKilogram;
-        }
-
-        public double getWeightInKilograms() {
-            return weightInKilograms;
-        }
-
-        public int getPriceInGbpPerKilogram() {
-            return priceInGbpPerKilogram;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return EqualsBuilder.reflectionEquals(this, o);
-        }
-
-        @Override
-        public int hashCode() {
-            return HashCodeBuilder.reflectionHashCode(this);
-        }
-
-        @Override
-        public String toString() {
-            return ToStringBuilder.reflectionToString(this);
-        }
-    }
-
-    public static class OrderService {
-
-        private List<Order> orders;
-
-        public OrderService() {
-            orders = new ArrayList<>();
-        }
-
-        public LiveBoard getLiveBoard() {
-            Map<Integer, Double> priceToWeightMap = orders.stream()
-                    .collect(Collectors.groupingBy(order -> order.getPriceInGbpPerKilogram(),
-                            Collectors.summingDouble(order -> order.getWeightInKilograms()))
-                    );
-
-            List<LiveBoardSale> liveBoardSales = priceToWeightMap.entrySet().stream()
-                    .map(priceAndWeight -> new LiveBoardSale(priceAndWeight.getValue(), priceAndWeight.getKey()))
-                    .sorted(Comparator.comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram()))
-                    .collect(toList());
-
-            return new LiveBoard(liveBoardSales);
-        }
-
-        public void registerOrder(Order order) {
-            orders.add(order);
-        }
-    }
-
-    public static class Order {
-        private final UUID uuid;
-        private final String userId;
-        private final double weightInKilograms;
-        private final int priceInGbpPerKilogram;
-        private final OrderType orderType;
-
-        public Order(UUID uuid, String userId, double weightInKilograms, int priceInGbpPerKilogram, OrderType orderType) {
-            this.uuid = uuid;
-            this.userId = userId;
-            this.weightInKilograms = weightInKilograms;
-            this.priceInGbpPerKilogram = priceInGbpPerKilogram;
-            this.orderType = orderType;
-        }
-
-        public double getWeightInKilograms() {
-            return weightInKilograms;
-        }
-
-        public int getPriceInGbpPerKilogram() {
-            return priceInGbpPerKilogram;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return EqualsBuilder.reflectionEquals(this, o);
-        }
-
-        @Override
-        public int hashCode() {
-            return HashCodeBuilder.reflectionHashCode(this);
-        }
-
-        @Override
-        public String toString() {
-            return ToStringBuilder.reflectionToString(this);
-        }
-    }
 }

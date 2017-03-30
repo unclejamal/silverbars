@@ -42,6 +42,17 @@ public class LiveBoardTest {
     }
 
     @Test
+    public void addsTwoRegisteredBuysForSamePrice() throws Exception {
+        OrderService orderService = new OrderService();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 7.7, 707, OrderType.BUY));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 8.8, 707, OrderType.BUY));
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardSale(16.5, 707))));
+    }
+
+    @Test
     public void addsTwoRegisteredSalesForSamePrice() throws Exception {
         OrderService orderService = new OrderService();
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 3.5, 303, OrderType.SELL));

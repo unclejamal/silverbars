@@ -1,5 +1,8 @@
 package com.cs;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -85,41 +88,17 @@ public class LiveBoardTest {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Order order = (Order) o;
-
-            if (Double.compare(order.weightInKilograms, weightInKilograms) != 0) return false;
-            if (pricePerKilogram != order.pricePerKilogram) return false;
-            if (uuid != null ? !uuid.equals(order.uuid) : order.uuid != null) return false;
-            if (userId != null ? !userId.equals(order.userId) : order.userId != null) return false;
-            return orderType == order.orderType;
-
+            return EqualsBuilder.reflectionEquals(this, o);
         }
 
         @Override
         public int hashCode() {
-            int result;
-            long temp;
-            result = uuid != null ? uuid.hashCode() : 0;
-            result = 31 * result + (userId != null ? userId.hashCode() : 0);
-            temp = Double.doubleToLongBits(weightInKilograms);
-            result = 31 * result + (int) (temp ^ (temp >>> 32));
-            result = 31 * result + pricePerKilogram;
-            result = 31 * result + (orderType != null ? orderType.hashCode() : 0);
-            return result;
+            return HashCodeBuilder.reflectionHashCode(this);
         }
 
         @Override
         public String toString() {
-            return "Order{" +
-                    "uuid=" + uuid +
-                    ", userId='" + userId + '\'' +
-                    ", weightInKilograms=" + weightInKilograms +
-                    ", pricePerKilogram=" + pricePerKilogram +
-                    ", orderType=" + orderType +
-                    '}';
+            return ToStringBuilder.reflectionToString(this);
         }
     }
 }

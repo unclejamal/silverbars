@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class LiveBoardTest {
+public class OrderServiceTest {
 
     private OrderService orderService;
 

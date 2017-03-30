@@ -75,14 +75,14 @@ public class LiveBoardTest {
         private final UUID uuid;
         private final String userId;
         private final double weightInKilograms;
-        private final int pricePerKilogram;
+        private final int priceInGbpPerKilogram;
         private final OrderType orderType;
 
-        public Order(UUID uuid, String userId, double weightInKilograms, int pricePerKilogram, OrderType orderType) {
+        public Order(UUID uuid, String userId, double weightInKilograms, int priceInGbpPerKilogram, OrderType orderType) {
             this.uuid = uuid;
             this.userId = userId;
             this.weightInKilograms = weightInKilograms;
-            this.pricePerKilogram = pricePerKilogram;
+            this.priceInGbpPerKilogram = priceInGbpPerKilogram;
             this.orderType = orderType;
         }
 

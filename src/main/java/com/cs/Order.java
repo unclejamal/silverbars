@@ -21,6 +21,10 @@ public class Order {
         this.orderType = orderType;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
     public double getWeightInKilograms() {
         return weightInKilograms;
     }

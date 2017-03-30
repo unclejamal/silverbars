@@ -1,9 +1,7 @@
 package com.cs;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.*;
@@ -39,5 +37,12 @@ public class OrderService {
 
     public void registerOrder(Order order) {
         orders.add(order);
+    }
+
+    public void cancelOrder(UUID orderId) {
+        List<Order> ordersAfterRemoval = orders.stream()
+                .filter(order -> !Objects.equals(orderId, order.getUuid()))
+                .collect(Collectors.toList());
+        this.orders = ordersAfterRemoval;
     }
 }

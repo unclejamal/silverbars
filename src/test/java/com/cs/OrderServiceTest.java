@@ -83,4 +83,15 @@ public class OrderServiceTest {
 
         assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(1.1, 111), new LiveBoardSale(2.2, 222))));
     }
+
+    @Test
+    public void cancelsOrder() throws Exception {
+        UUID orderId = UUID.randomUUID();
+        orderService.registerOrder(new Order(orderId, "userId2", 1.1, 111, OrderType.SELL));
+
+        orderService.cancelOrder(orderId);
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+        assertThat(liveBoard.getSales(), Matchers.empty());
+    }
 }

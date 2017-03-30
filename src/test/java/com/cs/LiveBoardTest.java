@@ -22,6 +22,16 @@ public class LiveBoardTest {
     }
 
     @Test
+    public void hasOneRegisteredBuy() throws Exception {
+        OrderService orderService = new OrderService();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 7.7, 707, OrderType.BUY));
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardSale(7.7, 707))));
+    }
+
+    @Test
     public void hasOneRegisteredSale() throws Exception {
         OrderService orderService = new OrderService();
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 3.5, 303, OrderType.SELL));

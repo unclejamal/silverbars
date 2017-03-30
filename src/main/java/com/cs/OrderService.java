@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.*;
 
 public class OrderService {
 
@@ -17,17 +17,24 @@ public class OrderService {
     }
 
     public LiveBoard getLiveBoard() {
+
+        return new LiveBoard(
+                calculateLiveBoardFor(OrderType.SELL, comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram())),
+                calculateLiveBoardFor(OrderType.BUY, comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram()))
+        );
+    }
+
+    private List<LiveBoardSale> calculateLiveBoardFor(OrderType type, Comparator<LiveBoardSale> comparator) {
         Map<Integer, Double> priceToWeightMap = orders.stream()
-                .collect(Collectors.groupingBy(order -> order.getPriceInGbpPerKilogram(),
-                        Collectors.summingDouble(order -> order.getWeightInKilograms()))
+                .filter(order -> type == order.getOrderType())
+                .collect(groupingBy(order -> order.getPriceInGbpPerKilogram(),
+                        summingDouble(order -> order.getWeightInKilograms()))
                 );
 
-        List<LiveBoardSale> liveBoardSales = priceToWeightMap.entrySet().stream()
+        return priceToWeightMap.entrySet().stream()
                 .map(priceAndWeight -> new LiveBoardSale(priceAndWeight.getValue(), priceAndWeight.getKey()))
-                .sorted(Comparator.comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram()))
+                .sorted(comparator)
                 .collect(toList());
-
-        return new LiveBoard(liveBoardSales);
     }
 
     public void registerOrder(Order order) {

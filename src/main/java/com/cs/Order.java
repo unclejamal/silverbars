@@ -29,6 +29,10 @@ public class Order {
         return priceInGbpPerKilogram;
     }
 
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

@@ -38,7 +38,7 @@ public class OrderServiceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardSale(7.7, 707))));
+        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardItem(7.7, 707))));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class OrderServiceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(3.5, 303))));
+        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardItem(3.5, 303))));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class OrderServiceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardSale(16.5, 707))));
+        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardItem(16.5, 707))));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class OrderServiceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(5.6, 303))));
+        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardItem(5.6, 303))));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class OrderServiceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardSale(8.8, 888), new LiveBoardSale(7.7, 777))));
+        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardItem(8.8, 888), new LiveBoardItem(7.7, 777))));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class OrderServiceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(1.1, 111), new LiveBoardSale(2.2, 222))));
+        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardItem(1.1, 111), new LiveBoardItem(2.2, 222))));
     }
 
     @Test

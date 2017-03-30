@@ -4,19 +4,19 @@ import java.util.List;
 
 public class LiveBoard {
 
-    private final List<LiveBoardSale> sales;
-    private final List<LiveBoardSale> buys;
+    private final List<LiveBoardItem> sales;
+    private final List<LiveBoardItem> buys;
 
-    public LiveBoard(List<LiveBoardSale> sales, List<LiveBoardSale> liveBoardSales) {
+    public LiveBoard(List<LiveBoardItem> sales, List<LiveBoardItem> buys) {
         this.sales = sales;
-        this.buys = liveBoardSales;
+        this.buys = buys;
     }
 
-    public List<LiveBoardSale> getSales() {
+    public List<LiveBoardItem> getSales() {
         return sales;
     }
 
-    public List<LiveBoardSale> getBuys() {
+    public List<LiveBoardItem> getBuys() {
         return buys;
     }
 }

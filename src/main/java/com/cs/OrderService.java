@@ -17,12 +17,12 @@ public class OrderService {
     public LiveBoard getLiveBoard() {
 
         return new LiveBoard(
-                calculateLiveBoardFor(OrderType.SELL, comparing(LiveBoardSale::getPriceInGbpPerKilogram)),
-                calculateLiveBoardFor(OrderType.BUY, comparing(LiveBoardSale::getPriceInGbpPerKilogram).reversed())
+                calculateLiveBoardFor(OrderType.SELL, comparing(LiveBoardItem::getPriceInGbpPerKilogram)),
+                calculateLiveBoardFor(OrderType.BUY, comparing(LiveBoardItem::getPriceInGbpPerKilogram).reversed())
         );
     }
 
-    private List<LiveBoardSale> calculateLiveBoardFor(OrderType type, Comparator<LiveBoardSale> comparator) {
+    private List<LiveBoardItem> calculateLiveBoardFor(OrderType type, Comparator<LiveBoardItem> comparator) {
         Map<Integer, Double> priceToWeightMap = orders.stream()
                 .filter(order -> type == order.getOrderType())
                 .collect(groupingBy(Order::getPriceInGbpPerKilogram,
@@ -30,7 +30,7 @@ public class OrderService {
                 );
 
         return priceToWeightMap.entrySet().stream()
-                .map(priceAndWeight -> new LiveBoardSale(priceAndWeight.getValue(), priceAndWeight.getKey()))
+                .map(priceAndWeight -> new LiveBoardItem(priceAndWeight.getValue(), priceAndWeight.getKey()))
                 .sorted(comparator)
                 .collect(toList());
     }

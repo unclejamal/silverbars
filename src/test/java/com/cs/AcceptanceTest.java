@@ -46,9 +46,9 @@ public class AcceptanceTest {
         LiveBoard liveBoard = orderService.getLiveBoard();
 
         assertThat(liveBoard.getSales(), equalTo(asList(
-                new LiveBoardSale(5.5, 306),
-                new LiveBoardSale(1.5, 307),
-                new LiveBoardSale(1.2, 310)
+                new LiveBoardItem(5.5, 306),
+                new LiveBoardItem(1.5, 307),
+                new LiveBoardItem(1.2, 310)
         )));
     }
 
@@ -62,9 +62,9 @@ public class AcceptanceTest {
         LiveBoard liveBoard = orderService.getLiveBoard();
 
         assertThat(liveBoard.getBuys(), equalTo(asList(
-                new LiveBoardSale(1.2, 310),
-                new LiveBoardSale(1.5, 307),
-                new LiveBoardSale(5.5, 306)
+                new LiveBoardItem(1.2, 310),
+                new LiveBoardItem(1.5, 307),
+                new LiveBoardItem(5.5, 306)
         )));
     }
 

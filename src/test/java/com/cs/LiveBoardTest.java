@@ -51,9 +51,6 @@ public class LiveBoardTest {
         }
     }
 
-    public static class Sale {
-    }
-
     public static class OrderService {
 
         private List<Order> orders;

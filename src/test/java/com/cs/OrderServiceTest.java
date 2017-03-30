@@ -72,7 +72,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void sortsTwoRegisteredBuysForDifferentPricesByPriceInAscendingOrder() throws Exception {
+    public void sortsTwoRegisteredBuysForDifferentPricesByPriceInDescendingOrder() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 8.8, 888, OrderType.BUY));
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 7.7, 777, OrderType.BUY));
 

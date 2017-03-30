@@ -19,8 +19,8 @@ public class OrderService {
     public LiveBoard getLiveBoard() {
 
         return new LiveBoard(
-                calculateLiveBoardFor(OrderType.SELL, comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram())),
-                calculateLiveBoardFor(OrderType.BUY, comparing(liveBoardSale -> liveBoardSale.getPriceInGbpPerKilogram()))
+                calculateLiveBoardFor(OrderType.SELL, comparing(LiveBoardSale::getPriceInGbpPerKilogram)),
+                calculateLiveBoardFor(OrderType.BUY, comparing(LiveBoardSale::getPriceInGbpPerKilogram).reversed())
         );
     }
 

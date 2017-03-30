@@ -45,10 +45,10 @@ public class AcceptanceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(
-                new LiveBoardItem(5.5, 306),
-                new LiveBoardItem(1.5, 307),
-                new LiveBoardItem(1.2, 310)
+        assertThat(liveBoard.getSellSummary(), equalTo(asList(
+                new LiveBoardSummaryItem(5.5, 306),
+                new LiveBoardSummaryItem(1.5, 307),
+                new LiveBoardSummaryItem(1.2, 310)
         )));
     }
 
@@ -61,10 +61,10 @@ public class AcceptanceTest {
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(
-                new LiveBoardItem(1.2, 310),
-                new LiveBoardItem(1.5, 307),
-                new LiveBoardItem(5.5, 306)
+        assertThat(liveBoard.getBuySummary(), equalTo(asList(
+                new LiveBoardSummaryItem(1.2, 310),
+                new LiveBoardSummaryItem(1.5, 307),
+                new LiveBoardSummaryItem(5.5, 306)
         )));
     }
 

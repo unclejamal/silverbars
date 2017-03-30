@@ -19,75 +19,75 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void hasInitiallyNoSales() throws Exception {
+    public void hasInitiallyNoSellOrders() throws Exception {
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), is(empty()));
+        assertThat(liveBoard.getSellSummary(), is(empty()));
     }
 
     @Test
-    public void hasInitiallyNoBuys() throws Exception {
+    public void hasInitiallyNoBuyOrders() throws Exception {
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), is(empty()));
+        assertThat(liveBoard.getBuySummary(), is(empty()));
     }
 
     @Test
-    public void hasOneRegisteredBuy() throws Exception {
+    public void hasOneRegisteredBuyOrder() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 7.7, 707, OrderType.BUY));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardItem(7.7, 707))));
+        assertThat(liveBoard.getBuySummary(), equalTo(asList(new LiveBoardSummaryItem(7.7, 707))));
     }
 
     @Test
-    public void hasOneRegisteredSale() throws Exception {
+    public void hasOneRegisteredSellOrder() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 3.5, 303, OrderType.SELL));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardItem(3.5, 303))));
+        assertThat(liveBoard.getSellSummary(), equalTo(asList(new LiveBoardSummaryItem(3.5, 303))));
     }
 
     @Test
-    public void addsTwoRegisteredBuysForSamePrice() throws Exception {
+    public void addsTwoRegisteredBuyOrdersForSamePrice() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 7.7, 707, OrderType.BUY));
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 8.8, 707, OrderType.BUY));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardItem(16.5, 707))));
+        assertThat(liveBoard.getBuySummary(), equalTo(asList(new LiveBoardSummaryItem(16.5, 707))));
     }
 
     @Test
-    public void addsTwoRegisteredSalesForSamePrice() throws Exception {
+    public void addsTwoRegisteredSellOrdersForSamePrice() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 3.5, 303, OrderType.SELL));
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 2.1, 303, OrderType.SELL));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardItem(5.6, 303))));
+        assertThat(liveBoard.getSellSummary(), equalTo(asList(new LiveBoardSummaryItem(5.6, 303))));
     }
 
     @Test
-    public void sortsTwoRegisteredBuysForDifferentPricesByPriceInDescendingOrder() throws Exception {
+    public void sortsTwoRegisteredBuyOrdersForDifferentPricesByPriceInDescendingOrder() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 8.8, 888, OrderType.BUY));
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 7.7, 777, OrderType.BUY));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getBuys(), equalTo(asList(new LiveBoardItem(8.8, 888), new LiveBoardItem(7.7, 777))));
+        assertThat(liveBoard.getBuySummary(), equalTo(asList(new LiveBoardSummaryItem(8.8, 888), new LiveBoardSummaryItem(7.7, 777))));
     }
 
     @Test
-    public void sortsTwoRegisteredSalesForDifferentPricesByPriceInAscendingOrder() throws Exception {
+    public void sortsTwoRegisteredSellOrdersForDifferentPricesByPriceInAscendingOrder() throws Exception {
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 2.2, 222, OrderType.SELL));
         orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 1.1, 111, OrderType.SELL));
 
         LiveBoard liveBoard = orderService.getLiveBoard();
 
-        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardItem(1.1, 111), new LiveBoardItem(2.2, 222))));
+        assertThat(liveBoard.getSellSummary(), equalTo(asList(new LiveBoardSummaryItem(1.1, 111), new LiveBoardSummaryItem(2.2, 222))));
     }
 
     @Test
@@ -98,6 +98,6 @@ public class OrderServiceTest {
         orderService.cancelOrder(orderId);
 
         LiveBoard liveBoard = orderService.getLiveBoard();
-        assertThat(liveBoard.getSales(), is(empty()));
+        assertThat(liveBoard.getSellSummary(), is(empty()));
     }
 }

@@ -4,12 +4,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class LiveBoardItem {
+public class LiveBoardSummaryItem {
 
     private final double weightInKilograms;
     private final int priceInGbpPerKilogram;
 
-    public LiveBoardItem(double weightInKilograms, int priceInGbpPerKilogram) {
+    public LiveBoardSummaryItem(double weightInKilograms, int priceInGbpPerKilogram) {
         this.weightInKilograms = weightInKilograms;
         this.priceInGbpPerKilogram = priceInGbpPerKilogram;
     }

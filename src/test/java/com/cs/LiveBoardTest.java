@@ -8,7 +8,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -37,18 +39,16 @@ public class LiveBoardTest {
         assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(3.5, 303))));
     }
 
-//    @Test
-//    public void addsTwoRegisteredSalesForSamePrice() throws Exception {
-//        OrderService orderService = new OrderService();
-//        UUID orderId1 = UUID.randomUUID();
-//        UUID orderId2 = UUID.randomUUID();
-//        orderService.registerOrder(new Order(orderId1, "userId1", 3.5, 303, OrderType.SELL));
-//        orderService.registerOrder(new Order(orderId2, "userId2", 2.1, 303, OrderType.SELL));
-//
-//        LiveBoard liveBoard = orderService.getLiveBoard();
-//
-//        assertThat(liveBoard.getSales(), equalTo(asList(new Sale(orderId1, "userId1", 5.6, 303, OrderType.SELL))));
-//    }
+    @Test
+    public void addsTwoRegisteredSalesForSamePrice() throws Exception {
+        OrderService orderService = new OrderService();
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId1", 3.5, 303, OrderType.SELL));
+        orderService.registerOrder(new Order(UUID.randomUUID(), "userId2", 2.1, 303, OrderType.SELL));
+
+        LiveBoard liveBoard = orderService.getLiveBoard();
+
+        assertThat(liveBoard.getSales(), equalTo(asList(new LiveBoardSale(5.6, 303))));
+    }
 
     public enum OrderType {
         SELL
@@ -69,8 +69,8 @@ public class LiveBoardTest {
 
     public static class LiveBoardSale {
 
-        private final double weightInKilograms;
-        private final int priceInGbpPerKilogram;
+        public final double weightInKilograms;
+        public final int priceInGbpPerKilogram;
 
         public LiveBoardSale(double weightInKilograms, int priceInGbpPerKilogram) {
             this.weightInKilograms = weightInKilograms;
@@ -102,7 +102,14 @@ public class LiveBoardTest {
         }
 
         public LiveBoard getLiveBoard() {
-            List<LiveBoardSale> liveBoardSales = orders.stream().map(o -> new LiveBoardSale(o.weightInKilograms, o.priceInGbpPerKilogram)).collect(toList());
+            Map<Integer, Double> priceToWeightMap = orders.stream()
+                    .collect(Collectors.groupingBy(order -> order.getPriceInGbpPerKilogram(),
+                            Collectors.summingDouble(order -> order.getWeightInKilograms()))
+                    );
+
+            List<LiveBoardSale> liveBoardSales = priceToWeightMap.entrySet().stream()
+                    .map(priceAndWeight -> new LiveBoardSale(priceAndWeight.getValue(), priceAndWeight.getKey()))
+                    .collect(toList());
             return new LiveBoard(liveBoardSales);
         }
 
@@ -124,6 +131,14 @@ public class LiveBoardTest {
             this.weightInKilograms = weightInKilograms;
             this.priceInGbpPerKilogram = priceInGbpPerKilogram;
             this.orderType = orderType;
+        }
+
+        public double getWeightInKilograms() {
+            return weightInKilograms;
+        }
+
+        public int getPriceInGbpPerKilogram() {
+            return priceInGbpPerKilogram;
         }
 
         @Override
